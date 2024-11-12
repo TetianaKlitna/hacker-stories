@@ -9,7 +9,7 @@ function List(props) {
     <div>
       <h1>Hello from component List!</h1>
       <ul>
-        {list.map(item => <Item key = {item.objectID} item = {item} />)}
+        {list.map(item => <Item key = {item.getObjectId()} item = {item} />)}
       </ul>
     </div>
   );
@@ -20,13 +20,13 @@ function Item(props){
   const item = props.item;
 
   return (
-    <li key={item.objectID}>
+    <li>
       <span>
-        <a href={item.url}>{item.title} </a>
+        <a href={item.getUrl()}>{item.getTitle()} </a>
       </span>
-      <span>{item.author} </span>
-      <span>{item.num_comments} </span>
-      <span>{item.points} </span>
+      <span>{item.getAuthor()} </span>
+      <span>{item.getNumComments()} </span>
+      <span>{item.getPoints()} </span>
     </li>
     );
 

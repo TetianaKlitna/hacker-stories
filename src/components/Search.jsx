@@ -1,8 +1,11 @@
+import React from "react";
+
 function Search() {
 
+    let [searchTerm, setSearchTerm] = React.useState('');
+
     const handleChange = (event) => {
-       console.log(event);
-       console.log(event.target.value);
+      setSearchTerm(event.target.value);
     }
 
     return (
@@ -10,6 +13,8 @@ function Search() {
         <h1>Search Element</h1>
         <label htmlFor="search">Search: </label>
         <input id="search" type="text" onChange={handleChange}/>
+
+        <p>Searching for <strong>{searchTerm}</strong></p>
       </div>
     );
   }
