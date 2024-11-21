@@ -1,63 +1,27 @@
+//components
+import Search from "./components/Search";
+import List from "./components/List";
+
 const title = "React";
 
-const list = [
-  {
-    title: "React",
-    url: "https://reactjs.org/",
-    author: "Jordan Walke",
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: "Redux",
-    url: "https://redux.js.org/",
-    author: "Dan Abramov, Andrew Clark",
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
+const articles = [
+  {objectId:0, title:"React", url:"https://reactjs.org/", author:"Jordan Walke", numComments:3, points:4},
+  {objectId:1, title:"Redux", url:"https://redux.js.org/", author:"Dan Abramov, Andrew Clark", numComments:2, points:5},
 ];
 
-function List() {
-  return (
-    <div>
-      <h1>Hello from element List!</h1>
-      <ul>
-        {list.map((item) => {
-          return (
-            <li key={item.objectID}>
-              <span>
-                <a href={item.url}>{item.title} </a>
-              </span>
-              <span>{item.author} </span>
-              <span>{item.num_comments} </span>
-              <span>{item.points} </span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
+
+const handleSearch = (event) => {
+  console.log(event.target.value);
 }
 
-function Search() {
-  return (
-    <div>
-      <h1>Search Element</h1>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
-    </div>
-  );
-}
 
 function App() {
   return (
     <div>
       <h1>Hello, {title} !</h1>
-      <Search />
+      <Search onSearch = {handleSearch} />
       <hr />
-      <List />
+      <List list = {articles} />
     </div>
   );
 }
