@@ -1,22 +1,25 @@
 //components
 import Search from "./components/Search";
 import List from "./components/List";
-//classes
-import Article from "./data/Article";
 
 const title = "React";
 
 const articles = [
-  new Article(0, "React", "https://reactjs.org/", "Jordan Walke", 3, 4),
-  new Article(1, "Redux", "https://redux.js.org/", "Dan Abramov, Andrew Clark", 2, 5),
+  {objectId:0, title:"React", url:"https://reactjs.org/", author:"Jordan Walke", numComments:3, points:4},
+  {objectId:1, title:"Redux", url:"https://redux.js.org/", author:"Dan Abramov, Andrew Clark", numComments:2, points:5},
 ];
+
+
+const handleSearch = (event) => {
+  console.log(event.target.value);
+}
 
 
 function App() {
   return (
     <div>
       <h1>Hello, {title} !</h1>
-      <Search />
+      <Search onSearch = {handleSearch} />
       <hr />
       <List list = {articles} />
     </div>
