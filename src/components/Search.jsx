@@ -10,8 +10,7 @@ function Search(props) {
       <div>
         <h1>Search Element</h1>
         <label htmlFor="search">Search: </label>
-        <input id="search" type="text" onChange={handleChange}/>
-        <p>{props.searchValue}</p>
+        <input id="search" type="text" value = {props.searchValue} onChange={handleChange}/>
       </div>
     );
   }
