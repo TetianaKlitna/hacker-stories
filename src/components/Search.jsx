@@ -1,11 +1,8 @@
-import { useState } from "react";
-
 function Search(props) {
 
-  const [searchTerm, setSearchTerm] = useState('');
+
   const handleChange = (event) => {
                                     event.preventDefault();
-                                    setSearchTerm(event.target.value); 
                                     props.onSearch(event);
                                   };
 
@@ -14,7 +11,7 @@ function Search(props) {
         <h1>Search Element</h1>
         <label htmlFor="search">Search: </label>
         <input id="search" type="text" onChange={handleChange}/>
-        <p>{searchTerm}</p>
+        <p>{props.searchValue}</p>
       </div>
     );
   }
