@@ -1,6 +1,7 @@
 //components
 import Search from "./components/Search";
 import List from "./components/List";
+import { useState } from "react";
 
 const title = "React";
 
@@ -10,18 +11,24 @@ const articles = [
 ];
 
 
-const handleSearch = (event) => {
-  console.log(event.target.value);
-}
-
-
 function App() {
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = (event) => {
+    const val = event.target.value;
+    console.log(val);
+    setSearchTerm(val); 
+  }
+
+  const filteredArticles = articles.filter(article => article.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+
   return (
     <div>
       <h1>Hello, {title} !</h1>
-      <Search onSearch = {handleSearch} />
+      <Search searchValue = {searchTerm} onSearch = {handleSearch} />
       <hr />
-      <List list = {articles} />
+      <List list = {filteredArticles} />
     </div>
   );
 }
