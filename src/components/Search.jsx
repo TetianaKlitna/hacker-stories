@@ -1,16 +1,16 @@
-function Search(props) {
+function Search({onSearch, searchValue}) {
 
 
   const handleChange = (event) => {
                                     event.preventDefault();
-                                    props.onSearch(event);
+                                    onSearch(event);
                                   };
 
     return (
       <div>
         <h1>Search Element</h1>
         <label htmlFor="search">Search: </label>
-        <input id="search" type="text" value = {props.searchValue} onChange={handleChange}/>
+        <input id="search" type="text" value = {searchValue} onChange={handleChange}/>
       </div>
     );
   }
