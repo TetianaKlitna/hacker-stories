@@ -1,7 +1,7 @@
 //components
 import Search from "./components/Search";
 import List from "./components/List";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const title = "React";
 
@@ -13,11 +13,15 @@ const articles = [
 
 function App() {
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('search')||'');
+
+  React.useEffect(() => {
+    localStorage.setItem('search', searchTerm);
+  }, [searchTerm]);
 
   const handleSearch = (event) => {
     const val = event.target.value;
-    console.log(val);
+    localStorage.setItem('search', val);
     setSearchTerm(val); 
   }
 
