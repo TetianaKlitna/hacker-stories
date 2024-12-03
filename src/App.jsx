@@ -12,16 +12,21 @@ const articles = [
 
 
 function App() {
+  
+  const useStorageState = (key, initValue) => {
 
-  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('search')||'');
+      const [value, setValue] = useState(localStorage.getItem(key)||initValue);
 
-  React.useEffect(() => {
-    localStorage.setItem('search', searchTerm);
-  }, [searchTerm]);
+      React.useEffect(() => {
+        localStorage.setItem(key, value);
+      }, [value, key]);
+
+      return [value, setValue];
+  }
+  const [searchTerm, setSearchTerm] = useStorageState('search', 'React');
 
   const handleSearch = (event) => {
-    const val = event.target.value;
-    localStorage.setItem('search', val);
+    const val = event.target.value;;
     setSearchTerm(val); 
   }
 
