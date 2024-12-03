@@ -1,5 +1,6 @@
-function Search({onSearch, searchValue}) {
+import React from "react";
 
+function Search({onSearch, searchValue}) { 
 
   const handleChange = (event) => {
                                     event.preventDefault();
@@ -7,11 +8,11 @@ function Search({onSearch, searchValue}) {
                                   };
 
     return (
-      <div>
+      <React.Fragment>
         <h1>Search Element</h1>
         <label htmlFor="search">Search: </label>
         <input id="search" type="text" value = {searchValue} onChange={handleChange}/>
-      </div>
+      </React.Fragment>
     );
   }
 
