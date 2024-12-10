@@ -1,7 +1,8 @@
 //components
 import Search from "./components/Search";
 import List from "./components/List";
-import { useState } from "react";
+import useStorageState from "./hooks/useStorageState"
+import { Fragment } from "react";
 
 const title = "React";
 
@@ -12,24 +13,22 @@ const articles = [
 
 
 function App() {
-
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useStorageState('search', 'React');
 
   const handleSearch = (event) => {
-    const val = event.target.value;
-    console.log(val);
+    const val = event.target.value;;
     setSearchTerm(val); 
   }
 
   const filteredArticles = articles.filter(article => article.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 
   return (
-    <div>
+    <Fragment>
       <h1>Hello, {title} !</h1>
       <Search searchValue = {searchTerm} onSearch = {handleSearch} />
       <hr />
       <List list = {filteredArticles} />
-    </div>
+    </Fragment>
   );
 }
 
