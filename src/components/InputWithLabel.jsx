@@ -1,6 +1,6 @@
 import React from "react";
 
-function InputWithLabel({id, label, type = "text", value, onInputChange}) { 
+function InputWithLabel({id, type = "text", value, onInputChange, children}) { 
 
   const handleChange = (event) => {
                                     event.preventDefault();
@@ -10,7 +10,7 @@ function InputWithLabel({id, label, type = "text", value, onInputChange}) {
     return (
       <React.Fragment>
         <h1>Search Element</h1>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>{children}</label>
         <input id={id} type={type} value = {value} onChange={handleChange}/>
       </React.Fragment>
     );

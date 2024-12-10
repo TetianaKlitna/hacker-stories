@@ -25,7 +25,9 @@ function App() {
   return (
     <Fragment>
       <h1>Hello, {title} !</h1>
-      <InputWithLabel id = "search" label = "Search:" value = {searchTerm} onInputChange = {handleSearch} />
+      <InputWithLabel id = "search" value = {searchTerm} onInputChange = {handleSearch} >
+      <strong>Search:</strong>
+      </InputWithLabel>
       <hr />
       <List list = {filteredArticles} />
     </Fragment>
