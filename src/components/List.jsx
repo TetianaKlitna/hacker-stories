@@ -1,17 +1,17 @@
 
-function List({list}) {
+function List({list, onRemove}) {
 
   return (
     <div>
       <h1>Hello from component List!</h1>
       <ul>
-        {list.map(obj => <Item key = {obj.objectId} item = {obj}/> )}
+        {list.map(obj => <Item key = {obj.objectId} item = {obj} onRemoveItem = {onRemove}/> )}
       </ul>
     </div>
   );
 }
 
-function Item({item}){
+function Item({item, onRemoveItem}){
 
   return (
     <li key = {item.objectId}>
@@ -21,6 +21,7 @@ function Item({item}){
       <span>{item.author} </span>
       <span>{item.numComments} </span>
       <span>{item.points} </span>
+      <span><button type = "button" onClick={() => onRemoveItem(item.objectId)}><strong>X</strong></button></span>
     </li>
     );
 
