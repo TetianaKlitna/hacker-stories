@@ -1,5 +1,5 @@
 //components
-import Search from "./components/Search";
+import InputWithLabel from "./components/InputWithLabel";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState"
 import { Fragment } from "react";
@@ -25,7 +25,9 @@ function App() {
   return (
     <Fragment>
       <h1>Hello, {title} !</h1>
-      <Search searchValue = {searchTerm} onSearch = {handleSearch} />
+      <InputWithLabel id = "search" value = {searchTerm} onInputChange = {handleSearch} >
+      <strong>Search:</strong>
+      </InputWithLabel>
       <hr />
       <List list = {filteredArticles} />
     </Fragment>
