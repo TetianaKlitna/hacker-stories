@@ -21,7 +21,7 @@ function Item({item, onRemoveItem}){
       <span>{item.author} </span>
       <span>{item.numComments} </span>
       <span>{item.points} </span>
-      <span><button onClick={() => onRemoveItem(item.objectId)}><strong>X</strong></button></span>
+      <span><button type = "button" onClick={() => onRemoveItem(item.objectId)}><strong>X</strong></button></span>
     </li>
     );
 
