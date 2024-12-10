@@ -2,7 +2,7 @@
 import InputWithLabel from "./components/InputWithLabel";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState"
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
 const title = "React";
 
