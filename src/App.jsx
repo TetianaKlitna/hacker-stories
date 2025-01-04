@@ -2,7 +2,7 @@
 import InputWithLabel from "./components/InputWithLabel";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState";
-import { Fragment, useEffect, useReducer } from "react";
+import { Fragment, useEffect, useReducer, useCallback, useState } from "react";
 
 const title = "React";
 const apiUrl = "https://hn.algolia.com/api/v1/search?query=";
@@ -49,20 +49,21 @@ const articlesReducer = (state, action) => {
 
 function App() {
   const [searchTerm, setSearchTerm] = useStorageState("search", title);
+  const [url, setUrl] = useState(`${apiUrl}${searchTerm}`)
   const [articlesList, dispatchArticles] = useReducer(articlesReducer, {
     data: [],
     isLoading: false,
     isError: false,
   });
 
-  useEffect(() => {
+  const handleFetchStories = useCallback(() => {
     if (!searchTerm) {
       return;
     }
-
+    
     dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_init });
 
-    fetch(`${apiUrl}${searchTerm}`)
+    fetch(url)
       .then((response) => response.json())
       .then((result) => {
         dispatchArticles({
@@ -73,12 +74,20 @@ function App() {
       .catch(() =>
         dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_failure })
       );
-  }, [searchTerm]);
+  }, [url]);
 
-  const handleSearch = (event) => {
+  useEffect(() => {
+    handleFetchStories();
+  }, [handleFetchStories]);
+
+  const handleSearchInput = (event) => {
     const val = event.target.value;
     setSearchTerm(val);
   };
+
+  const handleSearchSubmit = () => {
+    setUrl(`${apiUrl}${searchTerm}`);
+  }
 
   const handleRemove = (item) => {
     dispatchArticles({ type: STORIES_ACTION_TYPE.remove_item, payload: item });
@@ -91,10 +100,11 @@ function App() {
         id="search"
         value={searchTerm}
         isFocused
-        onInputChange={handleSearch}
+        onInputChange={handleSearchInput}
       >
         <strong>Search:</strong>
       </InputWithLabel>
+      <button type="button" disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
       <hr />
       {articlesList.isError && <p>Something go wrong...</p>}
       {articlesList.isLoading ? (
