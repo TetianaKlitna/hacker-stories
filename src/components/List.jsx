@@ -6,7 +6,7 @@ function List({ list, onRemove }) {
       <h1>Hello from component List!</h1>
       <ul>
         {list.map((obj) => (
-          <Item key={obj.objectId} item={obj} onRemoveItem={onRemove} />
+          <Item key={obj.objectID} item={obj} onRemoveItem={onRemove} />
         ))}
       </ul>
     </Fragment>
@@ -15,7 +15,7 @@ function List({ list, onRemove }) {
 
 function Item({ item, onRemoveItem }) {
   return (
-    <li key={item.objectId}>
+    <li key={item.objectID}>
       <span>
         <a href={item.url}>{item.title} </a>
       </span>
