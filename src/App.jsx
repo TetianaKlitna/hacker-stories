@@ -2,18 +2,10 @@
 import InputWithLabel from "./components/InputWithLabel";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState";
-import { Fragment, useEffect, useReducer } from "react";
-import { INITIAL_ARTICLES } from "./data";
+import { Fragment, useEffect, useReducer, useCallback, useState } from "react";
 
 const title = "React";
-
-const getAsyncArticles = () =>
-  new Promise((resolve) =>
-    setTimeout(
-      () => resolve({ data: { articlesList: INITIAL_ARTICLES } }),
-      2000
-    )
-  );
+const apiUrl = "https://hn.algolia.com/api/v1/search?query=";
 
 const STORIES_ACTION_TYPE = {
   fetch_init: "STORIES_FETCH_INIT",
@@ -47,7 +39,7 @@ const articlesReducer = (state, action) => {
       return {
         ...state,
         data: state.data.filter(
-          (curr_item) => curr_item.objectId !== action.payload.objectId
+          (curr_item) => curr_item.objectID !== action.payload.objectID
         ),
       };
     default:
@@ -57,40 +49,49 @@ const articlesReducer = (state, action) => {
 
 function App() {
   const [searchTerm, setSearchTerm] = useStorageState("search", title);
+  const [url, setUrl] = useState(`${apiUrl}${searchTerm}`)
   const [articlesList, dispatchArticles] = useReducer(articlesReducer, {
     data: [],
     isLoading: false,
     isError: false,
   });
 
-  useEffect(() => {
+  const handleFetchStories = useCallback(() => {
+    if (!searchTerm) {
+      return;
+    }
+    
     dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_init });
-    getAsyncArticles()
+
+    fetch(url)
+      .then((response) => response.json())
       .then((result) => {
         dispatchArticles({
           type: STORIES_ACTION_TYPE.fetch_success,
-          payload: result.data.articlesList,
+          payload: result.hits,
         });
       })
       .catch(() =>
         dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_failure })
       );
-  }, []);
+  }, [url]);
 
-  const handleSearch = (event) => {
+  useEffect(() => {
+    handleFetchStories();
+  }, [handleFetchStories]);
+
+  const handleSearchInput = (event) => {
     const val = event.target.value;
     setSearchTerm(val);
   };
 
+  const handleSearchSubmit = () => {
+    setUrl(`${apiUrl}${searchTerm}`);
+  }
+
   const handleRemove = (item) => {
     dispatchArticles({ type: STORIES_ACTION_TYPE.remove_item, payload: item });
   };
-
-  const filteredArticles = articlesList.data.filter(
-    (article) =>
-      article.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-  );
-  console.log(articlesList.data);
 
   return (
     <Fragment>
@@ -99,10 +100,11 @@ function App() {
         id="search"
         value={searchTerm}
         isFocused
-        onInputChange={handleSearch}
+        onInputChange={handleSearchInput}
       >
         <strong>Search:</strong>
       </InputWithLabel>
+      <button type="button" disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
       <hr />
       {articlesList.isError && <p>Something go wrong...</p>}
       {articlesList.isLoading ? (
@@ -110,7 +112,7 @@ function App() {
           <strong>Loading...</strong>
         </p>
       ) : (
-        <List list={filteredArticles} onRemove={handleRemove} />
+        <List list={articlesList.data} onRemove={handleRemove} />
       )}
     </Fragment>
   );
