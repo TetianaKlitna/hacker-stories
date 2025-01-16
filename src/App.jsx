@@ -1,5 +1,5 @@
-//components
-import InputWithLabel from "./components/InputWithLabel";
+import axios from "axios";
+import SearchForm from "./components/SearchForm";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState";
 import { Fragment, useEffect, useReducer, useCallback, useState } from "react";
@@ -49,31 +49,30 @@ const articlesReducer = (state, action) => {
 
 function App() {
   const [searchTerm, setSearchTerm] = useStorageState("search", title);
-  const [url, setUrl] = useState(`${apiUrl}${searchTerm}`)
+  const [url, setUrl] = useState(`${apiUrl}${searchTerm}`);
   const [articlesList, dispatchArticles] = useReducer(articlesReducer, {
     data: [],
     isLoading: false,
     isError: false,
   });
 
-  const handleFetchStories = useCallback(() => {
+  const handleFetchStories = useCallback(async () => {
     if (!searchTerm) {
       return;
     }
-    
+
     dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_init });
 
-    fetch(url)
-      .then((response) => response.json())
-      .then((result) => {
-        dispatchArticles({
-          type: STORIES_ACTION_TYPE.fetch_success,
-          payload: result.hits,
-        });
-      })
-      .catch(() =>
-        dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_failure })
-      );
+    try {
+      const result = await axios.get(url);
+
+      dispatchArticles({
+        type: STORIES_ACTION_TYPE.fetch_success,
+        payload: result.data.hits,
+      });
+    } catch {
+      dispatchArticles({ type: STORIES_ACTION_TYPE.fetch_failure });
+    }
   }, [url]);
 
   useEffect(() => {
@@ -85,9 +84,10 @@ function App() {
     setSearchTerm(val);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (event) => {
+    event.preventDefult();
     setUrl(`${apiUrl}${searchTerm}`);
-  }
+  };
 
   const handleRemove = (item) => {
     dispatchArticles({ type: STORIES_ACTION_TYPE.remove_item, payload: item });
@@ -96,15 +96,11 @@ function App() {
   return (
     <Fragment>
       <h1>Hello, {title} !</h1>
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        isFocused
-        onInputChange={handleSearchInput}
-      >
-        <strong>Search:</strong>
-      </InputWithLabel>
-      <button type="button" disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
+      <SearchForm
+        searchTerm={searchTerm}
+        handleSearchSubmit={handleSearchSubmit}
+        handleSearchInput={handleSearchInput}
+      />
       <hr />
       {articlesList.isError && <p>Something go wrong...</p>}
       {articlesList.isLoading ? (
