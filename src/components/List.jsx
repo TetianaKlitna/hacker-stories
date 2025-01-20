@@ -1,3 +1,4 @@
+import styles from "./styles/List.module.css";
 import { Fragment } from "react";
 
 function List({ list, onRemove }) {
@@ -15,15 +16,19 @@ function List({ list, onRemove }) {
 
 function Item({ item, onRemoveItem }) {
   return (
-    <li key={item.objectID}>
-      <span>
+    <li key={item.objectID} className={styles.item}>
+      <span style={{ width: "40%"} }>
         <a href={item.url}>{item.title} </a>
       </span>
-      <span>{item.author} </span>
-      <span>{item.num_comments} </span>
-      <span>{item.points} </span>
-      <span>
-        <button type="button" onClick={() => onRemoveItem(item)}>
+      <span style={{ width: "30%" }}>{item.author} </span>
+      <span style={{ width: "10%" }}>{item.num_comments} </span>
+      <span style={{ width: "10%" }}>{item.points} </span>
+      <span style={{ width: "10%" }}>
+        <button
+          type="button"
+          className={`${styles.button} ${styles.button_small}`}
+          onClick={() => onRemoveItem(item)}
+        >
           <strong>X</strong>
         </button>
       </span>

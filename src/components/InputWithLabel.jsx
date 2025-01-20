@@ -16,9 +16,8 @@ function InputWithLabel({id, type = "text", value, isFocused, onInputChange, chi
 
     return (
       <React.Fragment>
-        <h1>Search Element</h1>
-        <label htmlFor={id}>{children}</label>
-        <input ref = {inputRef} id={id} type={type} value = {value} onChange={handleChange}/>
+        <label htmlFor={id} className="label">{children}</label>
+        <input ref = {inputRef} id={id} className="input" type={type} value = {value} onChange={handleChange}/>
       </React.Fragment>
     );
   }

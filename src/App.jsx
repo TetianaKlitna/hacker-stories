@@ -1,8 +1,9 @@
+import styles from "./App.module.css";
 import axios from "axios";
 import SearchForm from "./components/SearchForm";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState";
-import { Fragment, useEffect, useReducer, useCallback, useState } from "react";
+import { useEffect, useReducer, useCallback, useState } from "react";
 
 const title = "React";
 const apiUrl = "https://hn.algolia.com/api/v1/search?query=";
@@ -94,14 +95,13 @@ function App() {
   };
 
   return (
-    <Fragment>
-      <h1>Hello, {title} !</h1>
+    <div className={styles["container"]}>
+      <h1 className={styles["headline-primary"]}>Hello, {title} !</h1>
       <SearchForm
         searchTerm={searchTerm}
         handleSearchSubmit={handleSearchSubmit}
         handleSearchInput={handleSearchInput}
       />
-      <hr />
       {articlesList.isError && <p>Something go wrong...</p>}
       {articlesList.isLoading ? (
         <p>
@@ -110,7 +110,7 @@ function App() {
       ) : (
         <List list={articlesList.data} onRemove={handleRemove} />
       )}
-    </Fragment>
+    </div>
   );
 }
 
