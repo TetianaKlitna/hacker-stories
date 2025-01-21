@@ -1,5 +1,6 @@
 import styles from "./styles/List.module.css";
 import { Fragment } from "react";
+import Check from "../assets/check.svg?react";
 
 function List({ list, onRemove }) {
   return (
@@ -17,6 +18,7 @@ function List({ list, onRemove }) {
 function Item({ item, onRemoveItem }) {
   return (
     <li key={item.objectID} className={styles.item}>
+      <Check height="18px" width="18px" />
       <span style={{ width: "40%"} }>
         <a href={item.url}>{item.title} </a>
       </span>
