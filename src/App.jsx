@@ -1,8 +1,10 @@
+//import styles from "./App.module.css";
 import axios from "axios";
+import styled from "styled-components";
 import SearchForm from "./components/SearchForm";
 import List from "./components/List";
 import useStorageState from "./hooks/useStorageState";
-import { Fragment, useEffect, useReducer, useCallback, useState } from "react";
+import { useEffect, useReducer, useCallback, useState } from "react";
 
 const title = "React";
 const apiUrl = "https://hn.algolia.com/api/v1/search?query=";
@@ -46,6 +48,20 @@ const articlesReducer = (state, action) => {
       throw new Error();
   }
 };
+
+const StyledContainer = styled.div`
+  height: 100vw;
+  padding: 20px;
+  background: #83a4d4; /* fallback for old browsers */
+  background: linear-gradient(to left, #b6fbff, #83a4d4);
+  color: #171212;
+`;
+
+const StyledHeadlinePrimary = styled.h1`
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 2px;
+`;
 
 function App() {
   const [searchTerm, setSearchTerm] = useStorageState("search", title);
@@ -94,14 +110,13 @@ function App() {
   };
 
   return (
-    <Fragment>
-      <h1>Hello, {title} !</h1>
+    <StyledContainer>
+      <StyledHeadlinePrimary>Hello, {title} !</StyledHeadlinePrimary>
       <SearchForm
         searchTerm={searchTerm}
         handleSearchSubmit={handleSearchSubmit}
         handleSearchInput={handleSearchInput}
       />
-      <hr />
       {articlesList.isError && <p>Something go wrong...</p>}
       {articlesList.isLoading ? (
         <p>
@@ -110,7 +125,7 @@ function App() {
       ) : (
         <List list={articlesList.data} onRemove={handleRemove} />
       )}
-    </Fragment>
+    </StyledContainer>
   );
 }
 
